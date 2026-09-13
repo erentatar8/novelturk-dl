@@ -20,15 +20,16 @@ Python ile uğraşmak istemiyorsanız, doğrudan [Releases](https://github.com/e
 - **macOS:** `novelturk-dl-macos.zip` (Aşağıdaki Gatekeeper notuna bakın)
 - **Linux:** `novelturk-dl-linux`
 
-> **Önemli (macOS Güvenlik & İmza Uyarısı):**
-> Apple, App Store dışından indirilen bağımsız geliştirici uygulamalarını varsayılan olarak engeller (*"Geliştirici doğrulanamadı"* uyarısı). Uygulamayı açabilmek için:
-> 1. İndirdiğiniz `novelturk-dl.app` dosyasına **Control tuşuna basılı tutarak sağ tıklayın** ve **Aç**'ı seçin.
-> 2. Çıkan pencerede tekrar **Aç** butonuna basın.
-> 3. Alternatif olarak Terminal üzerinden şu komutu çalıştırarak karantinayı kaldırabilirsiniz:
+> **Önemli (macOS Güvenlik & İlk Açılış Uyarısı):**
+> Apple, yeni macOS sürümlerinde (Sequoia, Sonoma, Ventura) App Store dışı uygulamaları açarken Control+Tık yöntemini kısıtlamıştır. Uygulamayı ilk kez açmak için:
+> 1. İndirdiğiniz `novelturk-dl.app` dosyasına çift tıklayın (hata uyarısı verip açılmayacaktır, bu normaldir).
+> 2. Mac'inizde **Sistem Ayarları (System Settings) > Gizlilik ve Güvenlik (Privacy & Security)** menüsüne gidin.
+> 3. En aşağı kaydırın; *"novelturk-dl engellendi"* uyarısının yanındaki **"Yine de Aç" (Open Anyway)** butonuna tıklayın ve parolanızı/Touch ID'nizi girin.
+> 4. Alternatif olarak doğrudan Terminal üzerinden şu komutu çalıştırarak bu engeli anında kaldırabilirsiniz:
 >    ```bash
 >    xattr -cr /Applications/novelturk-dl.app
->    # veya indirilen dosya neredeyse:
->    xattr -cr novelturk-dl.app
+>    # veya dosya İndirilenler'deyse:
+>    xattr -cr ~/Downloads/novelturk-dl.app
 >    ```
 
 ---
@@ -113,13 +114,17 @@ If you prefer not to install Python, download the standalone executables from [R
 - **macOS:** `novelturk-dl-macos.zip` (See Gatekeeper note below)
 - **Linux:** `novelturk-dl-linux`
 
-> **Note on macOS Code Signing:**
-> Because this is an open-source app built without an Apple Developer ID certificate, macOS Gatekeeper may show a warning stating the developer cannot be verified.
-> - To launch: **Right-click (or Control-click)** the app and select **Open**, then confirm.
-> - Or run this command in Terminal to clear quarantine attributes:
->   ```bash
->   xattr -cr novelturk-dl.app
->   ```
+> **Note on macOS Security & First Launch:**
+> In modern macOS versions (Sequoia, Sonoma, Ventura), Apple no longer allows bypassing unsigned apps via Control+Click alone. To open the application for the first time:
+> 1. Double-click `novelturk-dl.app` once (it will show a security dialog and refuse to open; this is expected).
+> 2. Open **System Settings > Privacy & Security**.
+> 3. Scroll down to the **Security** section and click **"Open Anyway"** next to the `novelturk-dl` blocked notice, then enter your password/Touch ID.
+> 4. Alternatively, remove the quarantine attribute directly via Terminal:
+>    ```bash
+>    xattr -cr /Applications/novelturk-dl.app
+>    # or if in Downloads:
+>    xattr -cr ~/Downloads/novelturk-dl.app
+>    ```
 
 ---
 
