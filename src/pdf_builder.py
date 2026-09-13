@@ -4,9 +4,9 @@ from typing import List, Optional
 from xhtml2pdf import pisa
 from .models import Novel, Chapter
 from .cleaner import clean_chapter_html
-from .config import BASE_DIR
+from .config import BUNDLE_DIR
 
-FONT_PATH = (BASE_DIR / "assets" / "fonts" / "BookFont.ttf").resolve()
+FONT_PATH = (BUNDLE_DIR / "assets" / "fonts" / "BookFont.ttf").resolve()
 
 PDF_TEMPLATE = """<!DOCTYPE html>
 <html>

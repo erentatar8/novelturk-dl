@@ -4,26 +4,39 @@ from pathlib import Path
 
 block_cipher = None
 
-added_files = [
+from PyInstaller.utils.hooks import collect_all
+
+datas = [
     ('src/web', 'src/web'),
     ('assets', 'assets')
 ]
-
-hidden_imports = [
+binaries = []
+hiddenimports = [
     'webview',
     'xhtml2pdf',
     'ebooklib',
     'bs4',
     'PIL',
-    'reportlab'
+    'reportlab',
+    'reportlab.graphics.barcode.code128',
+    'reportlab.graphics.barcode.code39',
+    'reportlab.graphics.barcode.code93',
+    'reportlab.graphics.barcode.usps',
+    'reportlab.graphics.barcode.qr'
 ]
+
+for pkg in ['reportlab', 'xhtml2pdf', 'webview']:
+    pkg_datas, pkg_binaries, pkg_hiddenimports = collect_all(pkg)
+    datas += pkg_datas
+    binaries += pkg_binaries
+    hiddenimports += pkg_hiddenimports
 
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[],
-    datas=added_files,
-    hiddenimports=hidden_imports,
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

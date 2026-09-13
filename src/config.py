@@ -1,9 +1,23 @@
+import sys
 import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DOWNLOADS_DIR = BASE_DIR / "downloads"
-DOWNLOADS_DIR.mkdir(exist_ok=True)
+# PyInstaller frozen bundle support
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    BUNDLE_DIR = Path(sys._MEIPASS)
+    # Binary'nin çalıştığı gerçek dizin veya Kullanıcı Belgeleri
+    BASE_DIR = Path(sys.executable).parent
+else:
+    BUNDLE_DIR = Path(__file__).resolve().parent.parent
+    BASE_DIR = BUNDLE_DIR
+
+# İndirilen dosyalar için kullanıcıya açık downloads klasörü
+if getattr(sys, 'frozen', False):
+    DOWNLOADS_DIR = Path.home() / "Downloads" / "novelturk-dl"
+else:
+    DOWNLOADS_DIR = BASE_DIR / "downloads"
+
+DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 BASE_URL = "https://novelturk.com"
 AJAX_URL = f"{BASE_URL}/wp-admin/admin-ajax.php"

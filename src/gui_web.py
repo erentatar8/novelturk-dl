@@ -3,11 +3,14 @@ import sys
 from pathlib import Path
 import webview
 
+from .config import BUNDLE_DIR
 from .web_api import WebApi
 
 def run_gui():
-    # Resolve web directory
-    web_dir = Path(__file__).parent / "web"
+    # Resolve web directory (supports frozen pyinstaller bundle)
+    web_dir = BUNDLE_DIR / "src" / "web"
+    if not web_dir.exists():
+        web_dir = Path(__file__).parent / "web"
     index_html = web_dir / "index.html"
 
     if not index_html.exists():
