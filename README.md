@@ -15,7 +15,7 @@
 ## Türkçe
 
 ### İndirme (Kurulum Gerektirmeyen Hazır Sürümler)
-Python ile uğraşmak istemiyorsanız, doğrudan [Releases](https://github.com/KULLANICI_ADINIZ/novelturk-dl/releases) bölümünden sisteminize uygun dosyayı indirebilirsiniz:
+Python ile uğraşmak istemiyorsanız, doğrudan [Releases](https://github.com/erentatar8/novelturk-dl/releases) bölümünden sisteminize uygun dosyayı indirebilirsiniz:
 - **Windows:** `novelturk-dl-windows.exe` (İndirip çift tıklayarak çalıştırın)
 - **macOS:** `novelturk-dl-macos.zip` (Aşağıdaki Gatekeeper notuna bakın)
 - **Linux:** `novelturk-dl-linux`
@@ -49,7 +49,7 @@ Python ile uğraşmak istemiyorsanız, doğrudan [Releases](https://github.com/K
 
 #### 1. Depoyu Klonlayın
 ```bash
-git clone https://github.com/KULLANICI_ADINIZ/novelturk-dl.git
+git clone https://github.com/erentatar8/novelturk-dl.git
 cd novelturk-dl
 ```
 
@@ -108,7 +108,7 @@ Bu yazılım yalnızca kişisel kullanım, eğitim ve çevrimdışı arşivleme 
 ## English
 
 ### Prebuilt Binaries (No Python Required)
-If you prefer not to install Python, download the standalone executables from [Releases](https://github.com/KULLANICI_ADINIZ/novelturk-dl/releases):
+If you prefer not to install Python, download the standalone executables from [Releases](https://github.com/erentatar8/novelturk-dl/releases):
 - **Windows:** `novelturk-dl-windows.exe`
 - **macOS:** `novelturk-dl-macos.zip` (See Gatekeeper note below)
 - **Linux:** `novelturk-dl-linux`
@@ -139,7 +139,7 @@ If you prefer not to install Python, download the standalone executables from [R
 
 #### 1. Clone the repository
 ```bash
-git clone https://github.com/KULLANICI_ADINIZ/novelturk-dl.git
+git clone https://github.com/erentatar8/novelturk-dl.git
 cd novelturk-dl
 ```
 
