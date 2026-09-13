@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>novelturk-dl</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <img src="logo.png" alt="Logo" style="width: 24px; height: 24px; border-radius: 5px; box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);">
+        <span>novelturk-dl</span>
+      </div>
+
+      <div class="url-bar-container">
+        <div class="url-input-wrapper">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="novelUrlInput" class="url-input" placeholder="Novel URL'si veya adı girin (örn: https://novelturk.com/novel/reverend-insanity/)">
+        </div>
+        <button id="btnLoadNovel" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Fihristi Getir
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnOpenSettings" class="btn btn-secondary" title="İndirme ve Dönüştürme Seçenekleri">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Ayarlar
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area: Split View -->
+    <main class="main-view">
+      <!-- Left Sidebar: Novel Profile & Controls -->
+      <aside class="left-sidebar">
+        <div class="novel-card">
+          <div class="novel-cover-wrapper">
+            <img id="novelCoverImg" class="novel-cover-img" style="display:none;" alt="Novel Kapak">
+            <div id="novelCoverPlaceholder" class="novel-cover-placeholder">📚</div>
+            <!-- Quick Cover Action Overlay Buttons -->
+            <div class="cover-actions-overlay">
+              <button id="btnResetCover" class="cover-action-btn reset" title="Orijinal Kapağa Dön" style="display: none;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+              </button>
+              <button id="btnEditCover" class="cover-action-btn edit" title="Özel Kapak Resmi Seç">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              </button>
+            </div>
+          </div>
+          <div class="novel-meta">
+            <div id="novelTitle" class="novel-title">Novel Seçilmedi</div>
+            <div id="novelAuthor" class="novel-author">Yazar: -</div>
+            <div id="novelBadges" class="novel-badge-row">
+              <span class="badge">Bekleniyor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-section">
+          <div class="stat-box">
+            <div class="stat-label">Toplam Bölüm</div>
+            <div id="statTotalChapters" class="stat-value">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">İndirildi (Önbellek)</div>
+            <div id="statDownloadedChapters" class="stat-value">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Seçili Bölüm</div>
+            <div id="statSelectedChapters" class="stat-value">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Tamamlanma</div>
+            <div id="statPercent" class="stat-value">%0</div>
+          </div>
+        </div>
+
+        <!-- Action Control Box -->
+        <div class="action-box">
+          <div class="output-config-summary">
+            <span>Çıktı Formatı:</span>
+            <strong id="summaryFormat">EPUB + PDF</strong>
+          </div>
+          <div class="output-config-summary">
+            <span>Ciltleme Modu:</span>
+            <strong id="summarySplit">300'lük Ciltler</strong>
+          </div>
+          <div class="output-config-summary">
+            <span>Eşzamanlı İndirme:</span>
+            <strong id="summaryConcurrency">4 İş Parçacığı</strong>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <button id="btnStartProcess" class="btn btn-start" style="flex: 1;" disabled>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              İşlemi Başlat
+            </button>
+            <button id="btnStopProcess" class="btn btn-stop" disabled title="İşlemi Durdur">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="6" width="12" height="12"></rect></svg>
+            </button>
+          </div>
+
+          <button id="btnOpenFolder" class="btn btn-secondary" style="font-size: 11px;">
+            📂 İndirme Klasörünü Aç
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right Area: Chapter Table + Selection Filters -->
+      <section class="right-content">
+        <!-- Table Filter Toolbar -->
+        <div class="table-toolbar">
+          <div class="selection-badges-group">
+            <span style="font-size: 11.5px; font-weight: 600; color: var(--text-dim); margin-right: 4px;">Seçim:</span>
+            <button class="chip-btn" id="btnSelectAll">Tümü</button>
+            <button class="chip-btn" id="btnSelectNone">Hiçbiri</button>
+            <button class="chip-btn" id="btnSelectMissing">Eksikler</button>
+            <button class="chip-btn" id="btnSelectInvert">Tersine Çevir</button>
+            <div style="width: 1px; height: 16px; background: var(--border); margin: 0 4px;"></div>
+            <!-- Quick Range Preset Chips -->
+            <div id="quickRangeChips" style="display: flex; gap: 5px;"></div>
+          </div>
+
+          <div class="search-filter-box">
+            <div class="range-box">
+              <span style="font-size: 11px; color: var(--text-dim);">Aralık:</span>
+              <input type="number" id="rangeStart" class="range-input" placeholder="Başla" min="1">
+              <span style="color: var(--text-dim);">-</span>
+              <input type="number" id="rangeEnd" class="range-input" placeholder="Bitir" min="1">
+              <button class="chip-btn" id="btnApplyRange">Seç</button>
+            </div>
+            <input type="text" id="tableSearchInput" class="search-input" placeholder="Bölüm ara...">
+          </div>
+        </div>
+
+        <!-- Scrollable Table -->
+        <div class="table-container">
+          <table class="chapter-table">
+            <thead>
+              <tr>
+                <th style="width: 44px; text-align: center;">
+                  <input type="checkbox" id="chkMasterTable">
+                </th>
+                <th style="width: 80px;">No</th>
+                <th>Bölüm Başlığı</th>
+                <th style="width: 130px;">Durum</th>
+              </tr>
+            </thead>
+            <tbody id="chapterTableBody">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 60px 0; color: var(--text-dim);">
+                  Lütfen yukarıdan bir novel URL'si girip "Fihristi Getir" butonuna tıklayın.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Terminal Console Drawer -->
+        <div class="terminal-drawer" id="terminalDrawer">
+          <div class="terminal-header">
+            <span>Terminal & Sistem Günlüğü</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="chip-btn" id="btnClearLog" style="padding: 2px 7px; font-size: 10px;">Temizle</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <div class="terminal-line" style="color: #64748b;">[Sistem] Hazır. PyWebView WebKit motoru devrede.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Status / Progress Bar -->
+    <footer class="footer-bar">
+      <div class="progress-track">
+        <div id="progressBarFill" class="progress-fill"></div>
+      </div>
+      <div id="statusLabel" class="progress-text">Hazır</div>
+    </footer>
+  </div>
+
+  <!-- Settings Modal (Slide-Over / Dialog) -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="settings-modal">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ İndirme ve E-Kitap Ayarları</div>
+        <button class="modal-close-btn" id="btnCloseSettings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Output Formats -->
+        <div class="form-group">
+          <label class="form-label">Çıktı Formatı</label>
+          <div class="options-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="chkFormatEpub" checked>
+              <span>EPUB (.epub - E-Okuyucular)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="chkFormatPdf" checked>
+              <span>PDF (.pdf - A5 Kitap Düzeni)</span>
+            </label>
+          </div>
+          <div class="form-sublabel">EPUB ve PDF dosyaları otomatik olarak ayrı klasörlere kaydedilir.</div>
+        </div>
+
+        <!-- Volume Splitting -->
+        <div class="form-group">
+          <label class="form-label">Ciltleme Seçenekleri</label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="radio-label">
+              <input type="radio" name="splitMode" id="rbSplitYes" value="split" checked>
+              <span>Bölümleri Ciltlere Ayır (Önerilen)</span>
+            </label>
+            <div style="margin-left: 24px; display: flex; align-items: center; gap: 8px;">
+              <span class="form-sublabel">Her Ciltte Bölüm Sayısı:</span>
+              <input type="number" id="splitSizeInput" class="range-input" style="width: 70px;" value="300" min="50" max="1000" step="50">
+            </div>
+            <label class="radio-label">
+              <input type="radio" name="splitMode" id="rbSplitNo" value="single">
+              <span>Tek Cilt Halinde Birleştir (Tüm Seçili Bölümler)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Concurrency -->
+        <div class="form-group">
+          <label class="form-label">Paralel İndirme Hızı</label>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="range" id="concurrencyRange" min="1" max="8" value="4" style="flex: 1;">
+            <strong id="concurrencyValue" style="width: 100px; font-size: 12.5px;">4 İş Parçacığı</strong>
+          </div>
+          <div class="form-sublabel">Sitenin engellememesi ve donmaması için 4 thread idealdir.</div>
+        </div>
+
+        <!-- Cover Image -->
+        <div class="form-group">
+          <label class="form-label">Kapak Resmi</label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="radio-label">
+              <input type="radio" name="coverMode" id="rbCoverAuto" value="auto" checked>
+              <span>Sitedeki Orijinal Kapağı Kullan</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="coverMode" id="rbCoverCustom" value="custom">
+              <span>Özel Kapak Resmi Seç</span>
+            </label>
+            <div class="input-with-browse" id="customCoverBox" style="display: none;">
+              <input type="text" id="customCoverPath" placeholder="Resim dosyası seçin (PNG, JPG)..." readonly>
+              <button class="btn btn-secondary" id="btnBrowseCover">Gözat</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Title Formatting -->
+        <div class="form-group">
+          <label class="form-label">İçindekiler & Bölüm Başlığı Biçimi</label>
+          <div class="options-row">
+            <label class="radio-label">
+              <input type="radio" name="titleMode" id="rbTitleFull" value="full" checked>
+              <span>Tam Başlık (Bölüm 1: Başlık)</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="titleMode" id="rbTitleNum" value="numbered">
+              <span>Yalnızca Numaralı (Bölüm 1)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Output Directory -->
+        <div class="form-group">
+          <label class="form-label">Kaydetme Klasörü</label>
+          <div class="input-with-browse">
+            <input type="text" id="outputDirPath" placeholder="İndirme klasörü..." readonly>
+            <button class="btn btn-secondary" id="btnBrowseOutputDir">Klasör Seç</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btnSaveSettings">Ayarları Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

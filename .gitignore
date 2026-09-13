@@ -1,0 +1,31 @@
+# Python Virtual Environment
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Downloaded Novel Data & Databases (Telifli roman içeriklerinin GitHub'a sızmasını önler)
+downloads/*.db
+downloads/*.db-wal
+downloads/*.db-shm
+downloads/*/
+
+# Generated Book Outputs
+*.epub
+*.pdf
+
+# IDE & Editor caches
+.idea/
+.vscode/
+*.swp
+*.swo

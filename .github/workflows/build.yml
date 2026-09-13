@@ -1,0 +1,86 @@
+name: Build Cross-Platform Executables
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: novelturk-dl-windows.exe
+            build_cmd: |
+              pip install -r requirements.txt pyinstaller
+              pyinstaller novelturk-downloader.spec
+              ren dist\novelturk-dl.exe novelturk-dl-windows.exe
+            upload_path: dist/novelturk-dl-windows.exe
+
+          - os: macos-latest
+            artifact_name: novelturk-dl-macos.zip
+            build_cmd: |
+              pip install -r requirements.txt pyinstaller
+              pyinstaller novelturk-downloader.spec
+              cd dist
+              zip -r novelturk-dl-macos.zip novelturk-dl.app
+            upload_path: dist/novelturk-dl-macos.zip
+
+          - os: ubuntu-latest
+            artifact_name: novelturk-dl-linux
+            build_cmd: |
+              sudo apt-get update
+              sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev
+              pip install -r requirements.txt pyinstaller
+              pyinstaller novelturk-downloader.spec
+              mv dist/novelturk-dl dist/novelturk-dl-linux
+            upload_path: dist/novelturk-dl-linux
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Build Standalone Executable
+        run: ${{ matrix.build_cmd }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.upload_path }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_artifacts
+
+      - name: Publish Release with Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release_artifacts/**/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
