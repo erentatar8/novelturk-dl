@@ -32,11 +32,11 @@ jobs:
               zip -r novelturk-dl-macos.zip novelturk-dl.app
             upload_path: dist/novelturk-dl-macos.zip
 
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             artifact_name: novelturk-dl-linux
             build_cmd: |
               sudo apt-get update
-              sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev
+              sudo apt-get install -y libwebkit2gtk-4.0-dev libgtk-3-dev || sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev
               pyinstaller novelturk-downloader.spec
               mv dist/novelturk-dl dist/novelturk-dl-linux
             upload_path: dist/novelturk-dl-linux
@@ -76,11 +76,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release_artifacts
+          merge-multiple: true
 
       - name: Publish Release with Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: release_artifacts/**/*
+          files: release_artifacts/*
           draft: false
           prerelease: false
           generate_release_notes: true
